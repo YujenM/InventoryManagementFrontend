@@ -1,11 +1,10 @@
 <script setup>
-
+  import Landing  from "../pages/landing.vue";
+import router from "./router";
 </script>
 
 <template>
-  <div class="d-flex justify-center">
-    <h1>Hello World</h1>
-  </div>
+    <router-view />
     
 </template>
 
