@@ -9,7 +9,7 @@ import UserDashboard from '../../pages/Dashboard.vue';
 
 const routes = [
   { path: '/', name: 'Landing', component: Landing },
-  { path: '/AdminLgoin', name: 'AdminLogin', component: AdminLogin },
+  { path: '/AdminLogin', name: 'AdminLogin', component: AdminLogin },
   { path: '/AdminSignup', name: 'AdminSignup', component: AdminSignup},
   {path: '/UserLogin', name: 'UserLogin', component: UserLogin },
   {path:'/UserSignup',name:'UserSignup', component: UserSignup},
