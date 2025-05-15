@@ -4,7 +4,7 @@
             <!-- left login Form  -->
             <v-col cols="12" md="6" class="d-flex justify-center align-center">
                 <v-card class="pa-6 pa-md-10 w-100 mx-4 mx-md-10" style="background-color: #fff;">
-                    <h2 class="text-h4 text-center text-red ">Sign Up</h2>
+                    <h2 class="text-h4 text-center text-red ">Log In</h2>
                     
                     <v-text-field 
                         v-model="email"
@@ -29,7 +29,7 @@
                         <a href="#" class="text-red">Forgot Password?</a>
                     </div>
                     <div class="d-flex justify-center">
-                        <v-btn style="color:red" class="mb-3" @click="handleSubmit" >SignUp</v-btn>
+                        <v-btn style="color:red" class="mb-3" @click="handleSubmit" >LogIn</v-btn>
                     </div>
                     <div class="text-center mt-5">
                         <p class="mt-2 ">Already Have An account?</p>
@@ -98,18 +98,17 @@ const email=ref('');
 const errorMessage=ref('');
 
 const handleSubmit=async()=>{
-    try{
-        const data=await loginUser({
-            email:email.value,
-            password:password.value
-        });
-        if(data===200){
-            router.push('/UserDashboard');
-        }
-    }catch(err){
-        console.error("Login failed",err);
-        errorMessage.value="Invalid email or password";
-    }
+    const response = await loginUser({
+        email:email.value,
+        password:password.value 
+    });
 
+    if(response.status === 200){
+        router.push('/UserDashboard');
+    }
+    else {
+        console.log("Status Code", response.status);
+        console.log("Error Message", response.message);
+    }
 }
 </script>

@@ -6,6 +6,7 @@
                 <v-card class="pa-6 pa-md-10 w-100 mx-4 mx-md-10" style="background-color: #fff;">
                     <h2 class="text-h4 text-center text-red ">Sign In</h2>
                     <v-text-field 
+                        v-model="fullName"
                         label="Full Name"
                         variant="outlined"
                         density="comfortable"
@@ -13,6 +14,7 @@
                         append-inner-icon="mdi-account-circle">
                     </v-text-field>
                     <v-text-field 
+                        v-model="email"
                         label="Email"
                         variant="outlined"
                         density="comfortable"
@@ -21,6 +23,7 @@
                     </v-text-field>
                     
                     <v-text-field
+                        v-model="address"
                         label="Address"
                         variant="outlined"
                         density="comfortable"
@@ -28,6 +31,7 @@
                         append-inner-icon="mdi-home">
                     </v-text-field>
                     <v-text-field
+                    v-model="password"
                     label="Password"
                     variant="outlined"
                     density="comfortable"
@@ -43,7 +47,7 @@
                         <a href="#" class="text-red">Forgot Password?</a>
                     </div>
                     <div class="d-flex justify-center">
-                        <v-btn style="color:red" class="mb-3 " >SignUp</v-btn>
+                        <v-btn style="color:red" class="mb-3 " @click="handleSubmit" >SignUp</v-btn>
                     </div>
                     <div class="text-center mt-5">
                         <p class="mt-2 ">Don't Have An account?</p>
@@ -101,6 +105,28 @@
 </style>
 <script setup>
 import {ref} from 'vue';
+import { useRouter } from 'vue-router';
+import {signupUser} from '../src/Api/signup.js';
 const password=ref('');
+const fullName=ref('');
+const email=ref('');
+const address=ref('');
+const router=useRouter();
+const handleSubmit=async()=>{
+    const response=await signupUser({
+        name:fullName.value,
+        email:email.value,
+        address:address.value,
+        password:password.value
+    });
+    if(response.status===200 || response.status===201){
+        alert('User Created Successfully');
+        router.push('/UserLogin');
+    }else{
+        alert(response.status,response.message)
+    }
+}
+
+
 const showPassword=ref(false);
 </script>
