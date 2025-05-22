@@ -104,7 +104,7 @@ const handleSubmit=async()=>{
     });
 
     if(response.status === 200){
-        router.push('/UserDashboard');
+        router.push('/admin');
     }
     else {
         console.log("Status Code", response.status);
