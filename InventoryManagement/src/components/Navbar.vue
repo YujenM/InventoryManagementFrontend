@@ -5,38 +5,42 @@
       <v-btn icon @click="closeSidebar" class="close-btn">
         <v-icon>mdi-close</v-icon>
       </v-btn>
-      <div class="px-2 py-2 mt-10">
+      <div class="px-2 py-2 mt-10 d-flex flex-column fill-height pa-4">
         <div class="sidebar-title">
           <h2 class="nav-title text-red-darken-1 mb-3">Admin</h2>
         </div>
         <nav>
           <ul>
-            <!-- <li class="nav-li"><router-link to="/adminDashboard"class="router-li">Dashboard</router-link></li> -->
             <li v-for="item in navItem" :key="item.id" class="nav-li mt-5">
-              <router-link :to="item.path" class="router-li">
-                <v-icon class="">{{ item.icon }}</v-icon>
+              <router-link :to="item.path" class="router-li" exact>
+                <v-icon>{{ item.icon }}</v-icon>
                 {{ item.name }}
               </router-link>
-
             </li>
           </ul>
         </nav>
+        <v-spacer></v-spacer>
+          <div class="mb-10">
+            <v-btn class="w-100 logout-btn py-4 h-25" block color="red darken-1" @click="$emit('logout')">
+              Logout
+          </v-btn>
+          </div>
       </div>
     </aside>
 
     <!-- Main Content -->
     <div class="main-content">
-      <v-icon class="toggle-btn" @click="toggleSidebar">mdi-menu</v-icon>
+      <v-icon class="toggle-btn" style="height: 56px; border-radius: 10px;" @click="toggleSidebar">mdi-menu</v-icon>
       <slot /> 
     </div>
   </div>
+  
 </template>
 
 <script>
-import navItem  from '@/assets/json/navbar'
-console.log(navItem)
-export default {
+import navItem from '@/assets/json/navbar'
 
+export default {
   name: 'SideNav',
   data() {
     return {
@@ -79,7 +83,7 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
-  display:none;
+  display: none;
 }
 
 .main-content {
@@ -92,35 +96,41 @@ export default {
   display: none;
   margin-bottom: 1rem;
 }
-.nav-li{
+
+.nav-li {
   list-style: none;
-  text-decoration: none !important;
-  color: red;
   width: 100%;
 }
+
 .router-li {
-  display: block;                  
+  display: block;
   text-decoration: none !important;
   color: #616161;
   font-size: 1.2rem;
   padding: 0.5rem;
-  width: 100%;                     
-  box-sizing: border-box;       
-}
-.router-li:hover{
-  color: #F5F5F5;
-  background-color: #D32F2F;
-  padding:0.5rem;
   width: 100%;
   box-sizing: border-box;
   border-radius: 15px;
 }
 
+.router-li:hover {
+  color: #F5F5F5;
+  background-color: #D32F2F;
+}
+
+/* Active Link Styling */
+::v-deep(.router-li.router-link-exact-active) {
+  color: #F5F5F5;
+  background-color: #D32F2F;
+  border-radius: 15px;
+}
+
 /* Show toggle button only on small screens */
 @media (max-width: 768px) {
-  .close-btn{
+  .close-btn {
     display: block;
   }
+
   .toggle-btn {
     display: inline-block;
   }

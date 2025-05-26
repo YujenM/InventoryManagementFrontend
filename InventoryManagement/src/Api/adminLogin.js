@@ -3,6 +3,7 @@ export const adminLogin =async(queryobj)=>{
     const message=await ApiManager.axios
     .post('/admin/login',queryobj)
     .then((response)=>{
+        localStorage.setItem('Authentication', response.data.token);
         return response
     })
     .catch((e)=>{
