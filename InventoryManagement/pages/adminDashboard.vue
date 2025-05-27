@@ -103,7 +103,6 @@ const desserts = ref([]);
 onMounted(async () => {
   try {
     const res = await getAdminOrder();
-    console.log(res)
     if (res.success && Array.isArray(res.response)) {
       desserts.value = res.response.map(order => ({
         name: order.Item?.name || 'N/A',
