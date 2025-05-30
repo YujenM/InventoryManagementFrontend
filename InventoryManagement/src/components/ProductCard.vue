@@ -2,7 +2,7 @@
     <v-card class="pa-4" elevation="0" max-width="400" color="bg-red-darken-1">
         <div class="d-flex align-center mb-2">
         <v-avatar size="80" class="me-4">
-            <v-img src="https://res.cloudinary.com/dbozigpgf/image/upload/v1748252232/inventory_items/1748252225823-images.jpeg.jpg" alt="product" />
+            <v-img :src="pImage" alt="product" />
         </v-avatar>
         <div>
             <h3 class="text-subtitle-1 font-weight-bold mb-1">{{ ptitle }}</h3>
@@ -73,8 +73,12 @@ const props = defineProps({
         default:"This is a Product"
     },
     pRemaning:{
+        type:Number,
+        default:0
+    },
+    pImage:{
         type:String,
-        default:"0"
+        default:"https://cdn.vuetifyjs.com/images/cards/docks.jpg"
     }
     
 });

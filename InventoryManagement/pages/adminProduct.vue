@@ -73,6 +73,7 @@
                 :pprice="product.price"
                 :pdescription="product.description"
                 :pRemaning="product.stock"
+                :pImage="product.itemImage"
             />
             </v-col>
         </v-row>
@@ -115,7 +116,6 @@ const desserts=ref([]);
 const fetchProducts = async () => {
   try {
     const res = await adminGetProduct();
-    console.log('Response:', res);
 
     if (res.success && Array.isArray(res.response)) {
       desserts.value = res.response.map(product => ({
@@ -126,7 +126,7 @@ const fetchProducts = async () => {
         stock: product.stock,
         itemImage: product.itemImage || null 
       }));
-      console.log('Fetched products:', desserts.value);
+      
     } else {
       console.warn('Response did not contain valid product data.');
     }
@@ -145,13 +145,11 @@ const submitBtn = async () => {
     return;
   }
 
-  // Handle file correctly
-  const imageFile = Array.isArray(product.value.itemImage)
-    ? product.value.itemImage[0]
-    : product.value.itemImage;
+  let imageFile = product.value.itemImage;
+ 
 
-  if (!imageFile) {
-    console.log('Please upload an image.');
+  if (!imageFile || !(imageFile instanceof File)) {
+    console.log('Please upload a valid image.');
     return;
   }
 
@@ -160,19 +158,17 @@ const submitBtn = async () => {
   formData.append('description', product.value.description);
   formData.append('price', product.value.price);
   formData.append('stock', product.value.stock);
-  formData.append('itemImage', imageFile);  // Append correct file
+  formData.append('itemImage', imageFile);
 
-  // Debug form data properly
-  for (let pair of formData.entries()) {
-    console.log(`${pair[0]}:`, pair[1]);
-  }
+  // for (let pair of formData.entries()) {
+  //   console.log(`${pair[0]}:`, pair[1]);
+  // }
 
-  const token = localStorage.getItem('token'); 
-  const response = await adminAddProduct(formData, token); 
+  const token = localStorage.getItem('token');
+  const response = await adminAddProduct(formData, token);
 
   if (response.status === 200) {
-    console.log('Product added successfully');
-    fetchProducts(); 
+    fetchProducts();
   } else {
     console.error('Error adding product:', response);
   }
@@ -180,6 +176,8 @@ const submitBtn = async () => {
   addProduct.value = false;
   resetProduct();
 };
+
+
 
 </script>
 

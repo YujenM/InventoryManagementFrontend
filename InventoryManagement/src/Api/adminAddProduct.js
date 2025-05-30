@@ -1,10 +1,12 @@
 import ApiManager from "./ApiManager";
 
 export const adminAddProduct = (formData, token) => {
+ 
   return ApiManager.axios
     .post('/adminCrud/createItem', formData, {
       headers: {
         'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
     })
     .then((response) => response)
