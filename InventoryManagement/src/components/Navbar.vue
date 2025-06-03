@@ -21,7 +21,7 @@
         </nav>
         <v-spacer></v-spacer>
           <div class="mb-10">
-            <v-btn class="w-100 logout-btn py-4 h-25" block color="red darken-1" @click="$emit('logout')">
+            <v-btn class="w-100 logout-btn py-4 h-25" block color="red darken-1" @click='logout'>
               Logout
           </v-btn>
           </div>
@@ -39,6 +39,7 @@
 
 <script>
 import navItem from '@/assets/json/navbar'
+import router from '@/router';
 
 export default {
   name: 'SideNav',
@@ -55,8 +56,13 @@ export default {
     closeSidebar() {
       this.isSidebarOpen = false;
     },
+    logout(){
+    localStorage.removeItem('Authentication')
+    router.push('/AdminLogin')
+}
   },
 };
+
 </script>
 
 <style scoped>

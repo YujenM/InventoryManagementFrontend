@@ -69,11 +69,14 @@
             lg="3"
             >
             <ProductCard
+                :productId="product.id"
                 :ptitle="product.name"
                 :pprice="product.price"
                 :pdescription="product.description"
                 :pRemaning="product.stock"
                 :pImage="product.itemImage"
+                @deleted="removeProduct"
+                @edited="updateProduct"
             />
             </v-col>
         </v-row>
@@ -89,7 +92,6 @@ import { adminGetProduct } from '@/Api/adminGetProduct';
 
 const isFormValid = ref(false);
 const addProduct = ref(false);
-const products = ref([]);
 
 // Product form data
 const product = ref({
@@ -112,7 +114,7 @@ const resetProduct = () => {
 };
 
 // Fetch all products
-const desserts=ref([]);
+const desserts = ref([]);
 const fetchProducts = async () => {
   try {
     const res = await adminGetProduct();
@@ -126,7 +128,6 @@ const fetchProducts = async () => {
         stock: product.stock,
         itemImage: product.itemImage || null 
       }));
-      
     } else {
       console.warn('Response did not contain valid product data.');
     }
@@ -137,7 +138,6 @@ const fetchProducts = async () => {
 
 onMounted(fetchProducts);
 
-
 // Submit new product
 const submitBtn = async () => {
   if (!isFormValid.value) {
@@ -146,7 +146,6 @@ const submitBtn = async () => {
   }
 
   let imageFile = product.value.itemImage;
- 
 
   if (!imageFile || !(imageFile instanceof File)) {
     console.log('Please upload a valid image.');
@@ -159,10 +158,6 @@ const submitBtn = async () => {
   formData.append('price', product.value.price);
   formData.append('stock', product.value.stock);
   formData.append('itemImage', imageFile);
-
-  // for (let pair of formData.entries()) {
-  //   console.log(`${pair[0]}:`, pair[1]);
-  // }
 
   const token = localStorage.getItem('token');
   const response = await adminAddProduct(formData, token);
@@ -177,7 +172,24 @@ const submitBtn = async () => {
   resetProduct();
 };
 
+const removeProduct = (productId) => {
+  desserts.value = desserts.value.filter((product) => product.id !== productId);
+};
 
+const updateProduct = (updatedProduct) => {
+  const index = desserts.value.findIndex(product => product.id === updatedProduct.id);
+  if (index !== -1) {
+    const updated = {
+      id: updatedProduct.id,
+      name: updatedProduct.name,
+      description: updatedProduct.description,
+      price: updatedProduct.price,
+      stock: updatedProduct.stock,
+      itemImage: updatedProduct.image,
+    };
+    desserts.value.splice(index, 1, updated);
+  }
+};
 
 </script>
 

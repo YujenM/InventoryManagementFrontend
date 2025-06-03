@@ -1,18 +1,11 @@
 import ApiManager from "./ApiManager";
 
-const getToken = () => {
-  return localStorage.getItem('Authentication'); 
-};
 
 export const getAdminOrder = async () => {
   try {
-    const token = getToken();
+
     const response = await ApiManager.axios
-    .get('/adminCrud/getAdminOrder', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    .get('/adminCrud/getAdminOrder');
     return response.data;
   } catch (e) {
     return {
