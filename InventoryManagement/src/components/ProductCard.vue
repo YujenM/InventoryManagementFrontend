@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-4" elevation="0" max-width="400" color="bg-red-darken-1">
+  <v-card class="pa-4" elevation="0" height="300" max-height="400" max-width="400" color="bg-red-darken-1">
     <div class="d-flex align-center mb-2">
       <v-avatar size="80" class="me-4">
         <v-img :src="pImage" alt="product" />
@@ -23,14 +23,15 @@
       </v-menu>
     </div>
 
-    <div class="mb-4">
+    <div class="mb-10 h-25" color="bg-red-lighten-1">
       <p class="text-subtitle-2 font-weight-medium">Description</p>
-      <p class="text-body-2 text-grey-darken-1">{{ pdescription }}</p>
+      <p class="text-body-2 text-grey-darken-1">{{ sliceDescription(pdescription) }}</p>
     </div>
-
+    <v-spacer></v-spacer>
     <v-divider class="mb-3" />
-
-    <v-row no-gutters>
+    
+    <v-row no-gutters class="">
+      
       <v-col cols="12" class="d-flex justify-space-between align-center mb-2">
         <span class="text-caption">Sales</span>
         <div class="d-flex align-center">
@@ -89,6 +90,12 @@
 import { ref } from 'vue';
 import { adminDeleteProduct } from '@/Api/adminDeleteProduct';
 import { adminUpdateProduct } from '@/Api/adminUpdateProduct';
+const sliceDescription=(description)=>{
+  if (description.length > 100) {
+    return description.slice(0, 100) + '...';
+  }
+  return description;
+}
 
 const props = defineProps({
   productId: [String, Number],

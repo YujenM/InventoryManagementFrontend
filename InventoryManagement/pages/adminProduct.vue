@@ -52,8 +52,15 @@
         </v-card-text>
         <v-card-actions class="d-flex justify-center">
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" @click="submitBtn">Submit</v-btn>
-        </v-card-actions>
+            <v-btn
+              color="red darken-1"
+              :disabled="submitting"
+              :loading="submitting"
+              @click="submitBtn"
+            >
+              Submit
+            </v-btn>
+          </v-card-actions>
       </v-card>
     </v-dialog>
 
@@ -128,6 +135,7 @@ const fetchProducts = async () => {
         stock: product.stock,
         itemImage: product.itemImage || null 
       }));
+
     } else {
       console.warn('Response did not contain valid product data.');
     }
@@ -139,6 +147,7 @@ const fetchProducts = async () => {
 onMounted(fetchProducts);
 
 // Submit new product
+const submitting = ref(false);
 const submitBtn = async () => {
   if (!isFormValid.value) {
     console.log('Please fill all the fields correctly.');
@@ -152,6 +161,8 @@ const submitBtn = async () => {
     return;
   }
 
+  submitting.value = true; 
+
   const formData = new FormData();
   formData.append('name', product.value.name);
   formData.append('description', product.value.description);
@@ -163,14 +174,16 @@ const submitBtn = async () => {
   const response = await adminAddProduct(formData, token);
 
   if (response.status === 200) {
-    fetchProducts();
+    await fetchProducts();
   } else {
     console.error('Error adding product:', response);
   }
 
+  submitting.value = false; 
   addProduct.value = false;
   resetProduct();
 };
+
 
 const removeProduct = (productId) => {
   desserts.value = desserts.value.filter((product) => product.id !== productId);
